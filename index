@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PsicoTest - Tests Psicológicos Online</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>🧠 PsicoTest Online</h1>
+        <p>Evaluaciones psicológicas rápidas y profesionales</p>
+        <p>Resultados guardados automáticamente en Google Sheets</p>
+    </header>
+
+    <main>
+        <h2>Tests Disponibles</h2>
+        <ul>
+            <li>
+                <a href="tests/ejemplo-test.html">
+                    🧪 Test de Ejemplo - Probar el sistema de guardado
+                </a>
+            </li>
+            <!-- Aquí irán los tests reales más adelante (Big Five, Depresión, Ansiedad, etc.) -->
+        </ul>
+
+        <div style="margin-top: 50px; padding: 20px; background: #f0f0f0; border-radius: 10px;">
+            <h3>Estado actual del proyecto</h3>
+            <p>✅ GitHub Pages activado<br>
+               ✅ Google Apps Script conectado<br>
+               ✅ Sistema de guardado automático listo</p>
+        </div>
+    </main>
+
+    <footer>
+        <p>Desarrollado por Juan Bolívar • Psicólogo • Lima, Perú</p>
+        <p>Email: jbolivar20.pb@gmail.com</p>
+        <p>
+            <a href="https://github.com/jbolivar20/psicotest" target="_blank">Ver código fuente en GitHub</a>
+        </p>
+    </footer>
+</body>
+</html>

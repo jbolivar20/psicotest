@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cuestionario Caracterológico de Gastón Berger</title>
+  <meta name="description" content="Evaluación psicométrica del temperamento según la tipología de Gastón Berger">
+  <style>
+    :root {
+      --bg: #f8fafc; --card: #ffffff; --text: #0f172a; --muted: #475569;
+      --primary: #2563eb; --success: #16a34a; --warning: #f59e0b; --danger: #dc2626;
+      --border: #e2e8f0; --radius: 12px; --shadow: 0 4px 16px rgba(0,0,0,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding: 20px; }
+    .container { max-width: 850px; margin: 0 auto; }
+    .card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px; margin-bottom: 24px; }
+    h1, h2, h3 { margin-bottom: 12px; color: var(--text); }
+    h1 { font-size: 1.8rem; text-align: center; }
+    .subtitle { text-align: center; color: var(--muted); margin-bottom: 24px; font-size: 15px; }
+    
+    /* Formularios */
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
+    .form-group label { display: block; margin-bottom: 6px; font-weight: 500; font-size: 14px; }
+    input, select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; background: #fff; }
+    input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+    
+    /* Preguntas */
+    .section-title { background: #eff6ff; color: var(--primary); padding: 10px 16px; border-radius: 8px; margin: 24px 0 16px; font-weight: 600; text-align: center; }
+    .question { padding: 16px; margin-bottom: 14px; background: #f8fafc; border-radius: 8px; border-left: 4px solid var(--primary); }
+    .question p { margin-bottom: 10px; font-weight: 500; font-size: 15px; }
+    .options { display: flex; flex-direction: column; gap: 6px; }
+    .options label { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px; padding: 6px 10px; border-radius: 6px; transition: background 0.2s; }
+    .options label:hover { background: #f1f5f9; }
+    .options input { width: 16px; height: 16px; margin: 0; cursor: pointer; }
+    
+    /* Consentimiento */
+    .consent-box { background: #fff7ed; padding: 14px; border-radius: 8px; margin: 24px 0; border: 1px solid #fed7aa; }
+    .consent-box label { display: flex; gap: 10px; cursor: pointer; font-size: 14px; align-items: flex-start; }
+    .consent-box input { width: 18px; height: 18px; margin-top: 2px; }
+    .consent-box a { color: var(--primary); text-decoration: none; font-weight: 500; }
+    .consent-box a:hover { text-decoration: underline; }
+    
+    /* Botones */
+    button { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 500; cursor: pointer; transition: background 0.2s; margin-top: 8px; }
+    button:hover { background: #1d4ed8; }
+    button:disabled { background: #94a3b8; cursor: not-allowed; opacity: 0.7; }
+    .btn-success { background: var(--success); }
+    .btn-success:hover { background: #15803d; }
+    .btn-secondary { background: #64748b; }
+    .btn-group { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+    .btn-group button { flex: 1; min-width: 150px; }
+    
+    /* Estados y utilidades */
+    .hidden { display: none !important; }
+    .loading { display: inline-block; width: 18px; height: 18px; border: 2px solid white; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 8px; vertical-align: middle; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .alert { padding: 12px; border-radius: 8px; margin-bottom: 16px; font-size: 14px; }
+    .alert-info { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+    
+    /* Resultados */
+    .result-header { text-align: center; padding-bottom: 16px; border-bottom: 2px solid var(--border); margin-bottom: 20px; }
+    .typology-badge { display: inline-block; padding: 10px 24px; background: linear-gradient(135deg, var(--primary), #7c3aed); color: white; border-radius: 30px; font-weight: 700; font-size: 1.3rem; margin: 12px 0; box-shadow: 0 4px 12px rgba(37,99,235,0.3); }
+    .dimensions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 20px 0; }
+    .dim-card { background: #f8fafc; padding: 16px; border-radius: 8px; text-align: center; border: 1px solid var(--border); }
+    .dim-card .val { font-size: 1.6rem; font-weight: 700; color: var(--primary); }
+    .dim-card .lbl { font-size: 13px; color: var(--muted); margin-top: 4px; }
+    .dim-card .lvl { font-size: 14px; font-weight: 600; margin-top: 6px; color: var(--text); }
+    .interpretation { background: #f0fdf4; border-left: 4px solid var(--success); padding: 16px; border-radius: 0 8px 8px 0; margin: 16px 0; font-size: 14px; line-height: 1.6; }
+    .recommendations { background: #fff7ed; border-left: 4px solid var(--warning); padding: 16px; border-radius: 0 8px 8px 0; margin: 16px 0; font-size: 14px; line-height: 1.6; }
+    
+    /* Modal */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+    .modal-overlay.active { display: flex; }
+    .modal-content { background: white; padding: 24px; border-radius: 12px; max-width: 600px; width: 100%; max-height: 85vh; overflow-y: auto; position: relative; }
+    .modal-close { position: absolute; top: 12px; right: 12px; background: none; border: none; font-size: 24px; cursor: pointer; color: var(--muted); width: auto; }
+    .modal-close:hover { color: var(--danger); }
+    .policy-text { font-size: 14px; line-height: 1.6; color: var(--text); margin: 16px 0; }
+    .policy-text p { margin-bottom: 10px; }
+    
+    /* Print */
+    @media print {
+      body { background: white; padding: 0; color: black; }
+      .no-print { display: none !important; }
+      .card { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+      .typology-badge { background: #2563eb !important; color: white !important; -webkit-print-color-adjust: exact; }
+    }
+    @media (max-width: 600px) {
+      .card { padding: 20px; }
+      h1 { font-size: 1.5rem; }
+      .btn-group { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- FORMULARIO -->
+    <section id="form-section" class="card">
+      <h1>🧭 Cuestionario Caracterológico de Berger</h1>
+      <p class="subtitle">Instrumento psicométrico para la identificación del tipo temperamental</p>
+      
+      <form id="berger-form">
+        <div class="alert alert-info">
+          <strong>📋 INSTRUCCIONES:</strong> Esta es una prueba que te ayudará a conocerte mucho mejor. Para conseguirlo, SOLO TENDRÁS QUE CONTESTAR LAS PREGUNTAS INDICANDO TU RESPUESTA. Al final de cada alternativa hay un número (1, 5 o 9). Elige la respuesta que mejor te describa y consigna mentalmente el número correspondiente. Responde con la mayor sinceridad posible.
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="nombre">Nombre completo *</label>
+            <input type="text" id="nombre" required>
+          </div>
+          <div class="form-group">
+            <label for="edad">Edad *</label>
+            <input type="number" id="edad" min="14" max="25" required>
+          </div>
+          <div class="form-group">
+            <label for="sexo">Sexo *</label>
+            <select id="sexo" required>
+              <option value="">Seleccionar</option>
+              <option value="Hombre">Hombre</option>
+              <option value="Mujer">Mujer</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="fecha">Fecha de aplicación *</label>
+            <input type="date" id="fecha" required>
+          </div>
+        </div>
+
+        <div class="section-title">🌊 DIMENSIÓN: EMOTIVIDAD (Preguntas 1-10)</div>
+        <div id="dim-E"></div>
+
+        <div class="section-title">⚡ DIMENSIÓN: ACTIVIDAD (Preguntas 11-20)</div>
+        <div id="dim-A"></div>
+
+        <div class="section-title">🔁 DIMENSIÓN: RESONANCIA / SECUNDARIEDAD (Preguntas 21-30)</div>
+        <div id="dim-R"></div>
+
+        <div class="consent-box">
+          <label>
+            <input type="checkbox" id="consent-check" required>
+            <span>He leído y acepto la <a href="#" id="open-policy">Política de Privacidad</a>. Autorizo el tratamiento de mis respuestas con fines de orientación y comprendo que los resultados son de carácter referencial.</span>
+          </label>
+        </div>
+
+        <button type="submit" id="submit-btn" disabled>Calificar y Guardar Resultados</button>
+      </form>
+    </section>
+
+    <!-- RESULTADOS -->
+    <section id="results-section" class="card hidden">
+      <div class="result-header">
+        <h2>📊 Perfil Caracterológico</h2>
+        <p id="user-meta" style="color: var(--muted);"></p>
+      </div>
+      
+      <div style="text-align: center; margin: 20px 0;">
+        <div class="typology-badge" id="typology-result">---</div>
+        <p id="typology-desc" style="color: var(--muted); font-size: 14px; max-width: 600px; margin: 0 auto;"></p>
+      </div>
+
+      <h3 style="margin-top: 20px;">Dimensiones Evaluadas</h3>
+      <div class="dimensions-grid">
+        <div class="dim-card">
+          <div class="val" id="score-e-val">--</div>
+          <div class="lbl">Emotividad (E)</div>
+          <div class="lvl" id="score-e-lvl">--</div>
+        </div>
+        <div class="dim-card">
+          <div class="val" id="score-a-val">--</div>
+          <div class="lbl">Actividad (A)</div>
+          <div class="lvl" id="score-a-lvl">--</div>
+        </div>
+        <div class="dim-card">
+          <div class="val" id="score-r-val">--</div>
+          <div class="lbl">Resonancia (R)</div>
+          <div class="lvl" id="score-r-lvl">--</div>
+        </div>
+      </div>
+
+      <div class="interpretation">
+        <strong>🔍 Interpretación del Perfil:</strong>
+        <p id="interpretation-text" style="margin-top: 8px;"></p>
+      </div>
+
+      <div class="recommendations">
+        <strong>💡 Recomendaciones Vocacionales y de Desarrollo:</strong>
+        <p id="recommendations-text" style="margin-top: 8px;"></p>
+      </div>
+
+      <div class="btn-group no-print">
+        <button onclick="window.print()" class="btn-success">📄 Guardar / Imprimir PDF</button>
+        <button onclick="location.reload()" class="btn-secondary">🔄 Nueva Evaluación</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- MODAL POLÍTICA -->
+  <div id="privacy-modal" class="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close" id="close-policy">&times;</button>
+      <h3>🔒 Política de Privacidad y Tratamiento de Datos</h3>
+      <div class="policy-text">
+        <p><strong>Responsable:</strong> [TU NOMBRE/INSTITUCIÓN] | [tu-email@dominio.com]</p>
+        <p><strong>Finalidad:</strong> Evaluación del temperamento con fines de orientación vocacional y desarrollo personal.</p>
+        <p><strong>Datos recogidos:</strong> Nombre, edad, sexo, fecha y respuestas al cuestionario. No se solicitan documentos de identidad ni datos médicos sensibles.</p>
+        <p><strong>Base legal:</strong> Consentimiento explícito, libre e informado del evaluado.</p>
+        <p><strong>Almacenamiento:</strong> Los datos se transmiten cifrados (HTTPS) y se guardan en una hoja de cálculo con acceso restringido. Se eliminan automáticamente tras 12 meses o al finalizar el proyecto.</p>
+        <p><strong>Derechos:</strong> Puede solicitar acceso, rectificación, portabilidad o supresión de sus datos escribiendo a [tu-email@dominio.com].</p>
+        <p style="margin-top: 15px; font-style: italic; color: var(--muted);">⚠️ Nota: Este instrumento es orientativo y no sustituye una evaluación psicológica clínica profesional.</p>
+      </div>
+      <button id="accept-policy" class="btn-success">Entendido</button>
+    </div>
+  </div>
+
+  <script>
+    // ================= CONFIGURACIÓN GOOGLE SHEETS =================
+    const GOOGLE_SCRIPT_URL = 'TU_URL_APPS_SCRIPT_AQUI'; // ← REEMPLAZAR CON TU URL /exec
+
+    // ================= DATOS DE PREGUNTAS (30 ÍTEMS EXACTOS) =================
+    const QUESTIONS = [
+      // EMOTIVIDAD (1-10)
+      { id:'q1', dim:'E', t:'¿Toma Ud muy a pecho las pequeñas cosas cuya importancia sin embargo sabe que es mínima? ¿Se transforma a veces por insignificancias?', opts:[{v:9, t:'Sí, frecuentemente'},{v:1, t:'Solo le perturban los acontecimientos graves'}] },
+      { id:'q2', dim:'E', t:'¿Se entusiasma o indigna con facilidad?', opts:[{v:9, t:'Sí, con mucha facilidad'},{v:1, t:'Acepta Ud. Tranquilamente las cosas tal como son'}] },
+      { id:'q3', dim:'E', t:'¿Es Ud. susceptible, se siente herido(a) fácilmente y de manera profunda por una crítica algo viva o una observación poco amable o burlona?', opts:[{v:9, t:'Sí, me afecta profundamente'},{v:1, t:'Soporta las críticas sin sentirse menoscabado'}] },
+      { id:'q4', dim:'E', t:'¿Se turba con facilidad ante un suceso imprevisto? ¿Se sobresalta cuando lo llaman intempestivamente? ¿Palidece o ruboriza con facilidad?', opts:[{v:9, t:'Sí, me desconcierto fácilmente'},{v:1, t:'No se desconcierta Ud. sino muy difícilmente'}] },
+      { id:'q5', dim:'E', t:'¿Se acalora Ud. al hablar? ¿Eleva la voz en la conversación? ¿Siente la necesidad de emplear términos violentos o palabras demasiado expresivas?', opts:[{v:9, t:'Sí, suelo exaltarme al hablar'},{v:1, t:'Conversa Ud. con calma, sin prisa, de una manera reposada'}] },
+      { id:'q6', dim:'E', t:'¿Se siente Ud. angustiado frente a una tarea nueva o ante una perspectiva de cambio?', opts:[{v:9, t:'Sí, me genera angustia o nerviosismo'},{v:1, t:'Afronta Ud. la situación con serenidad'}] },
+      { id:'q7', dim:'E', t:'¿Pasa Ud. alternativamente de la exaltación al abatimiento, de la alegría a la tristeza y viceversa por tonterías y aún sin razón aparente?', opts:[{v:9, t:'Sí, mis estados de ánimo son cambiantes'},{v:1, t:'Es de un humor parejo y estable'}] },
+      { id:'q8', dim:'E', t:'¿Se siente frecuentemente obsesionado con dudas y escrúpulos a propósito de actos sin importancia? ¿Conversa Ud. a menudo en la mente un pensamiento completamente inútil y que aún lo inoportuna?', opts:[{v:9, t:'Sí, me ocurre con frecuencia'},{v:1, t:'No conoce más que por excepción este penoso estado de preocupación'}] },
+      { id:'q9', dim:'E', t:'¿Le sucede a veces estar violentamente conmovido, que le resulta completamente imposible hacer lo que desearía en tales casos (miedos paralizantes, timidez extrema, etc.)?', opts:[{v:9, t:'Sí, me ha sucedido experimentar bloqueo'},{v:1, t:'Por lo contrario jamás lo ha experimentado'}] },
+      { id:'q10', dim:'E', t:'¿Se siente con frecuencia desgraciado?', opts:[{v:9, t:'Sí, a menudo me siento infeliz'},{v:1, t:'Está generalmente contento de su suerte, y aún cuando las cosas no sucedan como Ud. quiera, piensa más en lo que será necesario cambiar, que en sus propios sentimientos'}] },
+      
+      // ACTIVIDAD (11-20)
+      { id:'q11', dim:'A', t:'¿Suele Ud. ocuparse activamente durante sus horas libres (estudios suplementarios, alguna acción social, trabajos manuales o en cualquier tarea no impuesta)?', opts:[{v:9, t:'Sí, siempre busco estar activo'},{v:5, t:'Aprovecha quizá tales momentos para entretenerse'},{v:1, t:'Pasa largos ratos sin hacer nada, soñando, meditando o simplemente distrayéndose'}] },
+      { id:'q12', dim:'A', t:'¿Necesita Ud. realizar un esfuerzo penoso para pasar de la idea a la acción, de la decisión a la ejecución?', opts:[{v:1, t:'Sí, me cuesta mucho empezar'},{v:9, t:'Lleva a cabo inmediatamente y sin dificultad lo que ha decidido hacer'}] },
+      { id:'q13', dim:'A', t:'¿Se descorazona Ud. fácilmente ante las dificultades o ante una tarea que se anuncia demasiado ardua?', opts:[{v:1, t:'Sí, tiendo a desanimarme rápido'},{v:9, t:'Por el contrario ¿Se siente estimulado por las dificultades y excitado por la idea del esfuerzo a realizar?'}] },
+      { id:'q14', dim:'A', t:'¿Le gusta soñar o meditar, ya sea sobre el pasado que se ha ido o sobre el futuro, o también acerca de las cosas puramente imaginarias?', opts:[{v:1, t:'Sí, disfruto mucho soñar y meditar'},{v:9, t:'Prefiere actuar correctamente o al menos lograr proyectos que preparen realmente el porvenir'}] },
+      { id:'q15', dim:'A', t:'¿Hace Ud, lo que tiene que hacer en seguida y sin que le cueste mucho (por ejemplo, escribir una carta, arreglar un problema, etc)?', opts:[{v:1, t:'No, suelo dejarlo para después'},{v:9, t:'Sí, lo hago de inmediato sin dificultad'}] },
+      { id:'q16', dim:'A', t:'¿Toma Ud, decisiones inmediatas, aun en los casos difíciles?', opts:[{v:1, t:'No, suelo dudar bastante'},{v:9, t:'Sí, soy rápido/a para decidir'}] },
+      { id:'q17', dim:'A', t:'¿Es Ud. movedizo e inquieto (gesticula, se levanta violentamente de su silla, va y viene por la habitación, etc.) en ausencia de toda emoción viva?', opts:[{v:1, t:'No, suelo estar quieto/a y tranquilo/a'},{v:9, t:'Sí, soy inquieto/a y me muevo constantemente'}] },
+      { id:'q18', dim:'A', t:'¿No vacila Ud, jamás al emprender una transformación útil cuando sabe que exigirá un gran esfuerzo de su parte?', opts:[{v:9, t:'Sí, actúo sin dudarlo si es necesario'},{v:1, t:'Retrocede ante el trabajo a realizar y prefiere contentarse, por dicha causa, con el estado de cosas en que está'}] },
+      { id:'q19', dim:'A', t:'Cuando han impartido instrucciones para una determinada tarea. ¿Se desentiende de la ejecución, con el sentimiento de haberse desembarazado de una preocupación?', opts:[{v:1, t:'Sí, delego y me olvido'},{v:9, t:'Vigila su realización de cerca, asegurándose que todo queda bien hecho en las condiciones y en el momento requerido'}] },
+      { id:'q20', dim:'A', t:'¿Prefiere Ud. mirar que hacer (siente placer por ejemplo, en observar a menudo y largamente el desarrollo de un juego que no practica)?', opts:[{v:1, t:'Sí, prefiero observar pasivamente'},{v:9, t:'¿Le gusta más actuar que observar pasivamente, resultándole aburrido el simple espectáculo?'}] },
+
+      // RESONANCIA / SECUNDARIEDAD (21-30)
+      { id:'q21', dim:'R', t:'¿Está Ud. a menudo guiado en su acción por la idea de un provenir lejano (ahorrar para la vejez, acumular o reunir materiales y datos para un trabajo a largo plazo, etc.) o por las consecuencias lejanas que puede tener?', opts:[{v:9, t:'Sí, pienso mucho en las consecuencias a largo plazo'},{v:1, t:'¿Se interesa especialmente por los resultados inmediatos?'}] },
+      { id:'q22', dim:'R', t:'¿Prevé Ud. “todo lo que puede hacer” y se prepara cuidadosamente para cada caso (por ejemplo, en ocasión de sus viajes o paseos hace equipajes minuciosos, estudios de itinerarios, previsión de posibles accidentes, etc)?', opts:[{v:9, t:'Sí, me preparo y prevengo todo detalladamente'},{v:1, t:'¿Prefiere atenerse a la inspiración del momento?'}] },
+      { id:'q23', dim:'R', t:'¿Tiene Ud. principios estrictos a los que trata de ceñirse?', opts:[{v:9, t:'Sí, sigo mis principios firmemente'},{v:1, t:'¿Prefiere adaptarse a las circunstancias con flexibilidad?'}] },
+      { id:'q24', dim:'R', t:'¿Es Ud. constante en sus proyectos? ¿Termina siempre lo que ha comenzado?', opts:[{v:9, t:'Sí, soy muy constante y termino lo que inicio'},{v:1, t:'¿Abandona con frecuencia una tarea antes de terminar empezándolo todo sin conducir nada?'}] },
+      { id:'q25', dim:'R', t:'¿Es Ud. constante en sus simpatías (continúa con sus amistades de infancia o frecuenta regularmente las mismas personas y los mismos círculos)?', opts:[{v:9, t:'Sí, mantengo mis vínculos por mucho tiempo'},{v:1, t:'¿Cambia a menudo de amigos (dejando por ejemplo, sin razón alguna de ver a personas que antes frecuentaba)?'}] },
+      { id:'q26', dim:'R', t:'¿Después de un exceso de cólera (o si Ud. no se encoleriza nunca después de una afrenta) se reconcilia con su circunstancial enemigo quedando su espíritu, en lo que a él respecta, como si nada hubiera sucedido?', opts:[{v:1, t:'Sí, se me olvida rápidamente y sigo adelante'},{v:5, t:'Durante cierto tiempo permanece de mal humor'},{v:9, t:'¿Es difícil de reconciliar (resentimiento persistente)?'}] },
+      { id:'q27', dim:'R', t:'¿Tiene Ud. hábitos sumamente estrictos a lo que está apegado? ¿Se siente atraído por el retorno regular de ciertos hechos?', opts:[{v:9, t:'Sí, valoro mucho la rutina y los hábitos fijos'},{v:1, t:'¿Siente horror por todo lo que es habitual o previsto de ante mano, siendo para Ud. la sorpresa un elemento esencial del placer?'}] },
+      { id:'q28', dim:'R', t:'¿Le gusta el orden, la simetría, la regularidad?', opts:[{v:9, t:'Sí, el orden y la simetría me satisfacen'},{v:1, t:'¿El orden le parece aburrido y siente la necesidad de encontrar por doquiera huella de fantasía?'}] },
+      { id:'q29', dim:'R', t:'¿Prevé con antelación el empleo de su tiempo y de sus fuerzas? ¿Es amigo de hacer planes fijos, horarios y trazar programas?', opts:[{v:9, t:'Sí, planifico y organizo mi tiempo detalladamente'},{v:1, t:'¿Se lanza a la acción sin regla precisa, fijado de antemano?'}] },
+      { id:'q30', dim:'R', t:'¿Cuándo ha adoptado una opinión ¿Se aferra a ellas con obstinación?', opts:[{v:9, t:'Sí, me cuesta cambiar de opinión una vez formada'},{v:1, t:'¿Se convence fácilmente de lo contrario y se deja seducir por la novedad de una idea?'}] }
+    ];
+
+    // ================= RENDERIZAR PREGUNTAS =================
+    function renderQuestions() {
+      const containers = { E: document.getElementById('dim-E'), A: document.getElementById('dim-A'), R: document.getElementById('dim-R') };
+      QUESTIONS.forEach((q, i) => {
+        let html = `<div class="question"><p><strong>${i+1}.</strong> ${q.t}</p><div class="options">`;
+        q.opts.forEach(opt => {
+          html += `<label><input type="radio" name="${q.id}" value="${opt.v}" required> ${opt.t} <span style="color:var(--muted); font-size:12px;">(${opt.v} pts)</span></label>`;
+        });
+        html += `</div></div>`;
+        containers[q.dim].insertAdjacentHTML('beforeend', html);
+      });
+    }
+    renderQuestions();
+
+    // ================= INTERACCIÓN =================
+    const consentCheck = document.getElementById('consent-check');
+    const submitBtn = document.getElementById('submit-btn');
+    const modal = document.getElementById('privacy-modal');
+
+    consentCheck?.addEventListener('change', () => submitBtn.disabled = !consentCheck.checked);
+    document.getElementById('open-policy')?.addEventListener('click', (e) => { e.preventDefault(); modal.classList.add('active'); });
+    document.getElementById('close-policy')?.addEventListener('click', () => modal.classList.remove('active'));
+    document.getElementById('accept-policy')?.addEventListener('click', () => { consentCheck.checked = true; submitBtn.disabled = false; modal.classList.remove('active'); });
+    modal?.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.classList.contains('active')) modal.classList.remove('active'); });
+
+    // ================= LÓGICA DE SCORING Y TIPOLOGÍA =================
+    document.getElementById('berger-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="loading"></span>Procesando...';
+
+      try {
+        // 1. Datos demográficos
+        const userData = {
+          nombre: document.getElementById('nombre').value.trim(),
+          edad: parseInt(document.getElementById('edad').value),
+          sexo: document.getElementById('sexo').value,
+          fecha: document.getElementById('fecha').value
+        };
+
+        // 2. Calcular puntajes brutos
+        const scores = { E: 0, A: 0, R: 0 };
+        QUESTIONS.forEach(q => {
+          const selected = document.querySelector(`input[name="${q.id}"]:checked`);
+          if (selected) scores[q.dim] += parseInt(selected.value);
+        });
+
+        // 3. Aplicar baremos
+        let factorE, nivelE, factorA, nivelA, factorR, nivelR;
+        const { E, A, R } = scores;
+
+        // Emotividad (por sexo)
+        if (userData.sexo === 'Hombre') {
+          if (E >= 60) { factorE='E'; nivelE='Emotividad Muy Alta'; }
+          else if (E >= 52) { factorE='E'; nivelE='Emotividad Alta'; }
+          else if (E >= 48) { factorE='E'; nivelE='Emotivo'; }
+          else if (E >= 35) { factorE='nE'; nivelE='No Emotivo'; }
+          else if (E >= 26) { factorE='nE'; nivelE='Emotividad Baja'; }
+          else { factorE='nE'; nivelE='Emotividad Muy Baja'; }
+        } else {
+          if (E >= 66) { factorE='E'; nivelE='Emotividad Muy Alta'; }
+          else if (E >= 58) { factorE='E'; nivelE='Emotividad Alta'; }
+          else if (E >= 51) { factorE='E'; nivelE='Emotivo'; }
+          else if (E >= 42) { factorE='nE'; nivelE='No Emotivo'; }
+          else if (E >= 35) { factorE='nE'; nivelE='Emotividad Baja'; }
+          else { factorE='nE'; nivelE='Emotividad Muy Baja'; }
+        }
+
+        // Actividad
+        if (A >= 68) { factorA='A'; nivelA='Activo Muy Alto'; }
+        else if (A >= 61) { factorA='A'; nivelA='Activo Alto'; }
+        else if (A >= 55) { factorA='A'; nivelA='Activo'; }
+        else if (A >= 47) { factorA='nA'; nivelA='No Activo'; }
+        else if (A >= 41) { factorA='nA'; nivelA='Actividad Baja'; }
+        else { factorA='nA'; nivelA='Actividad Muy Baja'; }
+
+        // Resonancia
+        if (R >= 69) { factorR='S'; nivelR='Secundariedad Muy Alta'; }
+        else if (R >= 62) { factorR='S'; nivelR='Secundariedad Alta'; }
+        else if (R >= 55) { factorR='S'; nivelR='Secundariedad'; }
+        else if (R >= 47) { factorR='P'; nivelR='Primario'; }
+        else if (R >= 40) { factorR='P'; nivelR='Primario Bajo'; }
+        else { factorR='P'; nivelR='Primario Muy Bajo'; }
+
+        // 4. Determinar Tipo Caracterológico
+        const key = `${factorE} ${factorA} ${factorR}`;
+        const TIPOLOGIAS = {
+          'E nA P': 'Nervioso', 'E nA S': 'Sentimental', 'E A P': 'Colérico', 'E A S': 'Apasionado',
+          'nE A P': 'Sanguíneo', 'nE A S': 'Flemático', 'nE nA P': 'Amorfo', 'nE nA S': 'Apático'
+        };
+        const tipo = TIPOLOGIAS[key] || 'No definido';
+
+        // Interpretaciones y recomendaciones estándar
+        const INTERPRETACIONES = {
+          'Nervioso': 'Combinación de alta emotividad, baja actividad y primariedad. Tiende a ser reactivo, sensible y con respuestas rápidas pero poco sostenidas. Busca estímulo inmediato y puede dispersarse con facilidad.',
+          'Sentimental': 'Alta emotividad, baja actividad y secundariedad. Profundiza en sus vivencias, es reflexivo, leal y con memoria emocional duradera. Ideal para roles que requieren empatía y análisis pausado.',
+          'Colérico': 'Alta emotividad, alta actividad y primariedad. Reacciona con intensidad pero canaliza esa energía en acción inmediata. Líder natural, decidido, aunque puede ser impaciente.',
+          'Apasionado': 'Alta emotividad, alta actividad y secundariedad. El perfil más intenso y perseverante. Combina pasión con constancia. Capaz de compromisos profundos y proyectos a largo plazo.',
+          'Sanguíneo': 'Baja emotividad, alta actividad y primariedad. Optimista, práctico y adaptable. Disfruta del presente, actúa con agilidad y recupera rápido el equilibrio tras contratiempos.',
+          'Flemático': 'Baja emotividad, alta actividad y secundariedad. Sereno, metódico y constante. Ejecuta con precisión y calma. Excelente para planificación, gestión y roles que requieren estabilidad.',
+          'Amorfo': 'Baja emotividad, baja actividad y primariedad. Flexible, desapegado y adaptable a circunstancias inmediatas. Se beneficia de estructuras claras y acompañamiento para tomar iniciativa.',
+          'Apático': 'Baja emotividad, baja actividad y secundariedad. Tranquilo, observador y con respuestas tardías pero reflexivas. Funciona bien en entornos predecibles y con objetivos bien definidos.'
+        };
+        const RECOMENDACIONES = {
+          'Nervioso': '• Canaliza tu sensibilidad en arte, comunicación o atención al detalle.\n• Establece rutinas cortas para mantener el enfoque.\n• Practica técnicas de regulación emocional (respiración, pausa reflexiva).',
+          'Sentimental': '• Busca carreras de acompañamiento, investigación o humanidades.\n• Establece límites saludables para no absorber el estrés ajeno.\n• Expresa tus emociones mediante escritura, arte o diálogo estructurado.',
+          'Colérico': '• Desarrolla liderazgo y gestión de equipos.\n• Aprende a escuchar activamente y tolerar la frustración en procesos lentos.\n• Canaliza tu energía en metas desafiantes pero realistas.',
+          'Apasionado': '• Orienta tu constancia hacia proyectos de impacto social o científico.\n• Practica la desconexión programada para evitar el desgaste.\n• Busca mentores que te ayuden a priorizar sin perder intensidad.',
+          'Sanguíneo': '• Explora roles dinámicos: ventas, turismo, eventos, comunicación.\n• Trabaja la planificación a mediano plazo y la constancia.\n• Aprovecha tu red social para generar oportunidades colaborativas.',
+          'Flemático': '• Ideal para ingenierías, administración, análisis de datos o logística.\n• Practica la comunicación asertiva para visibilizar tus aportes.\n• Define plazos externos para evitar la postergación natural.',
+          'Amorfo': '• Busca entornos con instrucciones claras y supervisión amable.\n• Explora carreras operativas, artísticas o de servicio directo.\n• Trabaja con un coach o mentor para activar tu iniciativa progresivamente.',
+          'Apático': '• Conecta tus tareas con propósitos personales significativos.\n• Explora roles técnicos, de soporte o investigación básica.\n• Usa recordatorios visuales y sistemas de recompensa para mantener motivación.'
+        };
+
+        // 5. Renderizar resultados
+        document.getElementById('user-meta').textContent = `${userData.nombre} | ${userData.edad} años | ${userData.sexo} | ${new Date(userData.fecha).toLocaleDateString('es-PE')}`;
+        document.getElementById('typology-result').textContent = tipo;
+        document.getElementById('typology-desc').textContent = INTERPRETACIONES[tipo];
+        
+        document.getElementById('score-e-val').textContent = E;
+        document.getElementById('score-e-lvl').textContent = `${nivelE} (${factorE})`;
+        document.getElementById('score-a-val').textContent = A;
+        document.getElementById('score-a-lvl').textContent = `${nivelA} (${factorA})`;
+        document.getElementById('score-r-val').textContent = R;
+        document.getElementById('score-r-lvl').textContent = `${nivelR} (${factorR})`;
+
+        document.getElementById('interpretation-text').textContent = INTERPRETACIONES[tipo];
+        document.getElementById('recommendations-text').innerHTML = RECOMENDACIONES[tipo].replace(/\n/g, '<br>');
+
+        // 6. Enviar a Google Sheets
+        await sendToSheets({ ...userData, scores, factors: { factorE, factorA, factorR }, tipo, rawKey: key });
+
+        // 7. Mostrar resultados
+        document.getElementById('form-section').classList.add('hidden');
+        document.getElementById('results-section').classList.remove('hidden');
+        window.scrollTo(0, 0);
+
+      } catch (error) {
+        console.error('Error:', error);
+        alert('⚠️ Ocurrió un error al procesar. Verifique que todas las preguntas estén respondidas.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Calificar y Guardar Resultados';
+      }
+    });
+
+    async function sendToSheets(payload) {
+      if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes('TU_URL')) {
+        console.warn('⚠️ Google Script URL no configurada. Los datos NO se guardarán.');
+        return;
+      }
+      try {
+        await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...payload, timestamp: new Date().toISOString() })
+        });
+        console.log('✅ Datos enviados a Google Sheets');
+      } catch (err) {
+        console.error('❌ Error al enviar:', err);
+      }
+    }
+  </script>
+</body>
+</html>

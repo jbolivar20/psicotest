@@ -1,0 +1,42 @@
+body { 
+ font-family: Arial,Helvetica, sans-serif; 
+ font-size: 10pt; 
+background-color: #eeeeee;
+}
+
+td { 
+ font-family: Arial,Helvetica, sans-serif; 
+ font-size: 10pt; 
+ }
+
+h1 { 
+text-decoration: none;
+ font-size: 10pt; 
+font-weight:normal; 
+ margin:0;
+ }
+
+h2 { 
+text-decoration: none;
+ font-size: 10pt; 
+ margin:0;
+ }
+
+h3 { 
+text-decoration: none;
+ font-size: 10pt; 
+ margin:0;
+ }
+
+
+a.header:active { color: white; font-size: 11pt; text-decoration: none }
+a.header:link { color: white; font-size: 11pt; text-decoration: none }
+a.header:visited { color: white; font-size: 11pt; text-decoration: none }
+a.header:hover { color: white; text-decoration: underline }
+
+a:active { color: #000055; text-decoration: underline}
+a:link { color: #000055; text-decoration: underline}
+a:visited { color: #000055; text-decoration: underline}
+a:hover {   text-decoration: underline;}
+
+.yeah { border-style: dotted }

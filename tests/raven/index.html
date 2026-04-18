@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test de Raven - Matrices Progresivas V.007 | LIFESANA</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #99CCFF 0%, #7BB3FF 100%);
+      color: #333;
+      line-height: 1.6;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      overflow: hidden;
+    }
+
+    header {
+      background: linear-gradient(135deg, #2A55FF 0%, #4DA6FF 100%);
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+    }
+
+    .logo {
+      max-width: 400px;
+      height: auto;
+      margin-bottom: 15px;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-top: 10px;
+      text-decoration: underline;
+    }
+
+    .instructions {
+      background: #D4FFAA;
+      border-left: 4px solid #4CAF50;
+      padding: 25px;
+      margin: 25px;
+      border-radius: 8px;
+    }
+
+    .instructions h3 {
+      color: #2E7D32;
+      margin-bottom: 15px;
+      font-size: 1.3rem;
+    }
+
+    .instructions p {
+      margin-bottom: 12px;
+      text-align: justify;
+    }
+
+    .instructions ol {
+      margin-left: 25px;
+      margin-top: 10px;
+    }
+
+    .instructions li {
+      margin-bottom: 8px;
+    }
+
+    .example-image {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .example-image img {
+      max-width: 100%;
+      height: auto;
+      border: 3px solid #4CAF50;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .example-response {
+      background: #BE9369;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px auto;
+      max-width: 600px;
+    }
+
+    .example-response p {
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #333;
+      text-align: center;
+    }
+
+    .example-radios {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .example-radio {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 15px;
+      background: #E0E0B0;
+      border-radius: 5px;
+    }
+
+    .questions-section {
+      padding: 25px;
+    }
+
+    .question-card {
+      background: #f8f9fa;
+      border: 2px solid #dee2e6;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 30px;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .question-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .question-header {
+      background: linear-gradient(135deg, #BE9369 0%, #D4A574 100%);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    .question-image {
+      text-align: center;
+      margin: 20px 0;
+      background: #E0E0B0;
+      padding: 15px;
+      border-radius: 8px;
+    }
+
+    .question-image img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
+
+    .radio-options {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+      background: #BE9369;
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      background: #E0E0B0;
+      border: 2px solid transparent;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-width: 80px;
+      justify-content: center;
+    }
+
+    .radio-option:hover {
+      border-color: #2A55FF;
+      background: #f0f4ff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(42, 85, 255, 0.2);
+    }
+
+    .radio-option input[type="radio"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      accent-color: #2A55FF;
+    }
+
+    .radio-option input[type="radio"]:checked + label {
+      font-weight: 700;
+      color: #2A55FF;
+    }
+
+    .radio-option:has(input:checked) {
+      border-color: #2A55FF;
+      background: #e6f0ff;
+      box-shadow: 0 0 0 3px rgba(42, 85, 255, 0.1);
+    }
+
+    .radio-option label {
+      cursor: pointer;
+      margin: 0;
+      font-size: 16px;
+      user-select: none;
+    }
+
+    .radio-option strong {
+      color: #333;
+      font-size: 18px;
+    }
+
+    .form-section {
+      background: #e8f5e9;
+      padding: 25px;
+      margin: 25px;
+      border-radius: 8px;
+      border: 2px solid #4caf50;
+    }
+
+    .form-section h3 {
+      color: #2e7d32;
+      margin-bottom: 20px;
+      font-size: 1.2rem;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="number"] {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #dee2e6;
+      border-radius: 6px;
+      font-size: 15px;
+      transition: border-color 0.3s ease;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #2A55FF;
+      box-shadow: 0 0 0 4px rgba(42, 85, 255, 0.1);
+    }
+
+    .actions {
+      padding: 25px;
+      text-align: center;
+      background: #f8f9fa;
+    }
+
+    .btn {
+      padding: 14px 32px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 0 10px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #2A55FF 0%, #4DA6FF 100%);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(42, 85, 255, 0.4);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: #5a6268;
+      transform: translateY(-2px);
+    }
+
+    .error-message {
+      background: #f8d7da;
+      color: #721c24;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+      border: 2px solid #f5c6cb;
+      display: none;
+    }
+
+    .validation-info {
+      background: #d1ecf1;
+      color: #0c5460;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 25px;
+      border-left: 4px solid #17a2b8;
+    }
+
+    .validation-info strong {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+
+      .radio-options {
+        gap: 10px;
+      }
+
+      .radio-option {
+        min-width: 70px;
+        padding: 8px 12px;
+      }
+
+      .btn {
+        display: block;
+        width: 100%;
+        margin: 10px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <img src="logolifesana.png" alt="Logo LifeSana" class="logo" onerror="this.style.display='none'">
+      <h1>LIFESANA - Evaluación de Inteligencia Factor G V03.7</h1>
+      <h2>Test de Raven - Matrices Progresivas V.007</h2>
+    </header>
+
+    <div class="instructions">
+      <h3>📋 Instrucciones</h3>
+      <p>La siguiente es una prueba que tiene <strong>tres partes</strong>:</p>
+      <ol>
+        <li><strong>Un dibujo mayor (problema)</strong> - Se le ha sacado una parte.</li>
+        <li><strong>Un grupo de seis u ocho piezas abajo (alternativas de respuesta)</strong> - Debe escoger cuál es la pieza que completa el diseño del dibujo mayor.</li>
+        <li><strong>Zona de respuesta</strong> - Una vez elegida, debe marcarla haciendo click en el número que contiene su respuesta.</li>
+      </ol>
+      
+      <p><strong>Su tarea es:</strong> Completar la parte faltante del dibujo mayor. Debe prestar mucha atención y elegir entre todas las alternativas la que mejor complete y quede muy bien.</p>
+      
+      <p><strong>Recuerde:</strong> Debe ubicar cuál de las piezas es la que va en el espacio vacío. Piénselo bien, solo una queda bien: ¿cuál es? Tiene que estar seguro de que es la que queda bien antes de hacer click en ella.</p>
+
+      <div class="example-image">
+        <img src="./vititobd/ejemplo.jpg" alt="Ejemplo de pregunta Raven" onerror="this.style.display='none'">
+      </div>
+
+      <div class="example-response">
+        <p><strong>ÁREA DE RESPUESTA:</strong> Haga click en el número que contenga la respuesta</p>
+        <div class="example-radios">
+          <div class="example-radio">
+            <input type="radio" name="example" id="ex1" disabled>
+            <label for="ex1"><strong>1</strong></label>
+          </div>
+          <div class="example-radio">
+            <input type="radio" name="example" id="ex2" checked disabled>
+            <label for="ex2"><strong>2</strong></label>
+          </div>
+          <div class="example-radio">
+            <input type="radio" name="example" id="ex3" disabled>
+            <label for="ex3"><strong>3</strong></label>
+          </div>
+          <div class="example-radio">
+            <input type="radio" name="example" id="ex4" disabled>
+            <label for="ex4"><strong>4</strong></label>
+          </div>
+          <div class="example-radio">
+            <input type="radio" name="example" id="ex5" disabled>
+            <label for="ex5"><strong>5</strong></label>
+          </div>
+          <div class="example-radio">
+            <input type="radio" name="example" id="ex6" disabled>
+            <label for="ex6"><strong>6</strong></label>
+          </div>
+        </div>
+      </div>
+
+      <p style="margin-top: 20px; padding: 12px; background: #fff; border-left: 3px solid #17a2b8; border-radius: 4px;">
+        <strong>Nota importante:</strong> Tenga en cuenta que los problemas son simples al principio y después se van complicando. No hay ninguna trampa. Si prestan atención a la forma como se solucionan los problemas fáciles, los que siguen les resultarán menos difíciles. Resuelvan un problema a la vez, desde el principio hasta el final. Cada uno tiene que trabajar con su propia velocidad. No hay que saltar ningún problema, no deje ninguno sin contestar. Tampoco vuelva atrás. Veamos cuántos problemas pueden resolver. Tienen todo el tiempo que quieran. Ahora pueden comenzar.
+      </p>
+    </div>
+
+    <div class="validation-info">
+      <strong>ℹ️ Validación:</strong>
+      <span id="validation-status">Complete todas las 60 preguntas seleccionando una respuesta para cada una.</span>
+    </div>
+
+    <form name="questions" action="system/proravenmacuto1.php" method="post" onsubmit="return verifyForm(this)">
+      <div class="questions-section" id="questionsContainer">
+        <!-- Las preguntas se generarán dinámicamente con JavaScript -->
+      </div>
+
+      <div class="form-section">
+        <h3>📝 Datos del Participante</h3>
+        
+        <div class="form-group">
+          <label for="nombre">Nombres *</label>
+          <input type="text" name="nombre" id="nombre" maxlength="52" required placeholder="Ingrese sus nombres">
+        </div>
+
+        <div class="form-group">
+          <label for="dni">D.N.I. *</label>
+          <input type="text" name="dni" id="dni" maxlength="8" pattern="[0-9]{8}" required placeholder="8 dígitos">
+        </div>
+
+        <div class="form-group">
+          <label for="eta">Edad *</label>
+          <input type="number" name="eta" id="eta" maxlength="2" min="1" max="99" required placeholder="Ej: 25">
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="btn btn-primary" id="submitBtn">Ver Resultados</button>
+        <button type="reset" class="btn btn-secondary" onclick="return confirm('¿Está seguro que desea restablecer todo el formulario? Se perderán todas sus respuestas.')">Restablecer</button>
+        <div id="error-message" class="error-message"></div>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // Array para rastrear respuestas
+    const answers = new Array(61); // Índice 0 no se usa, índices 1-60
+    for (let i = 1; i <= 60; i++) {
+      answers[i] = 0;
+    }
+
+    // Actualizar respuesta cuando se selecciona una opción
+    function updateAnswer(questionNum, answerValue) {
+      answers[questionNum] = answerValue;
+      updateValidationStatus();
+    }
+
+    // Actualizar estado de validación
+    function updateValidationStatus() {
+      let answered = 0;
+      const unanswered = [];
+
+      for (let i = 1; i <= 60; i++) {
+        if (answers[i] > 0) {
+          answered++;
+        } else {
+          unanswered.push(i);
+        }
+      }
+
+      const statusDiv = document.getElementById('validation-status');
+      const submitBtn = document.getElementById('submitBtn');
+
+      if (answered === 60) {
+        statusDiv.textContent = `✅ Formulario completo: ${answered}/60 preguntas respondidas.`;
+        statusDiv.style.color = '#155724';
+        submitBtn.disabled = false;
+      } else {
+        statusDiv.textContent = `Complete todas las preguntas: ${answered}/60 respondidas. Faltan ${60 - answered} pregunta(s).`;
+        statusDiv.style.color = '#0c5460';
+        submitBtn.disabled = answered < 60;
+      }
+    }
+
+    // Validar formulario antes de enviar
+    function verifyForm(form) {
+      const errorDiv = document.getElementById('error-message');
+      errorDiv.style.display = 'none';
+      errorDiv.innerHTML = '';
+
+      const unanswered = [];
+      for (let i = 1; i <= 60; i++) {
+        if (answers[i] === 0) {
+          unanswered.push(i);
+        }
+      }
+
+      if (unanswered.length > 0) {
+        let errorMsg = '';
+        if (unanswered.length === 1) {
+          errorMsg = `Debe responder la pregunta #${unanswered[0]}.`;
+        } else if (unanswered.length <= 10) {
+          errorMsg = `Debe responder las siguientes preguntas: ${unanswered.join(', ')}.`;
+        } else {
+          errorMsg = `Debe responder ${unanswered.length} preguntas. Las primeras sin responder son: ${unanswered.slice(0, 10).join(', ')}...`;
+        }
+        
+        errorDiv.innerHTML = '<strong>⚠️ Formulario incompleto:</strong><br>' + errorMsg;
+        errorDiv.style.display = 'block';
+        errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return false;
+      }
+
+      // Validar datos personales
+      const nombre = form.nombre.value.trim();
+      if (!nombre || nombre.length < 3) {
+        errorDiv.innerHTML = '<strong>⚠️ Error:</strong><br>Por favor ingrese un nombre válido (mínimo 3 caracteres).';
+        errorDiv.style.display = 'block';
+        errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return false;
+      }
+
+      const dni = form.dni.value.trim();
+      if (!dni || !/^\d{8}$/.test(dni)) {
+        errorDiv.innerHTML = '<strong>⚠️ Error:</strong><br>Por favor ingrese un DNI válido (8 dígitos numéricos).';
+        errorDiv.style.display = 'block';
+        errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return false;
+      }
+
+      const edad = form.eta.value.trim();
+      if (!edad || parseInt(edad) < 1 || parseInt(edad) > 99) {
+        errorDiv.innerHTML = '<strong>⚠️ Error:</strong><br>Por favor ingrese una edad válida (entre 1 y 99 años).';
+        errorDiv.style.display = 'block';
+        errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return false;
+      }
+
+      return true;
+    }
+
+    // Validación en tiempo real del DNI
+    document.getElementById('dni')?.addEventListener('input', function(e) {
+      this.value = this.value.replace(/[^0-9]/g, '');
+      if (this.value.length > 8) {
+        this.value = this.value.substring(0, 8);
+      }
+    });
+
+    // Actualizar validación cuando se selecciona una respuesta
+    document.querySelectorAll('input[type="radio"]').forEach(radio => {
+      radio.addEventListener('change', function() {
+        const name = this.name;
+        const questionNum = parseInt(name.replace('answer', ''));
+        const answerValue = parseInt(this.value);
+        updateAnswer(questionNum, answerValue);
+      });
+    });
+
+    // Generar todas las preguntas dinámicamente
+    function generateQuestions() {
+      const container = document.getElementById('questionsContainer');
+      if (!container) return;
+
+      // Definir estructura de preguntas
+      // Preguntas 1-24: 6 opciones
+      // Preguntas 25-60: 8 opciones
+      
+      for (let i = 1; i <= 60; i++) {
+        let img, options;
+        
+        if (i <= 12) {
+          img = `raven-a${i}.jpg`;
+          options = 6;
+        } else if (i <= 24) {
+          img = `raven-b${i - 12}.jpg`;
+          options = 6;
+        } else if (i <= 36) {
+          img = `raven-c${i - 24}.jpg`;
+          options = 8;
+        } else if (i <= 48) {
+          img = `raven-d${i - 36}.jpg`;
+          options = 8;
+        } else {
+          img = `raven-e${i - 48}.jpg`;
+          options = 8;
+        }
+
+        const questionCard = document.createElement('div');
+        questionCard.className = 'question-card';
+        questionCard.id = `question-${i}`;
+
+        const header = document.createElement('div');
+        header.className = 'question-header';
+        header.textContent = `Pregunta ${i}`;
+
+        const imageDiv = document.createElement('div');
+        imageDiv.className = 'question-image';
+        const imgEl = document.createElement('img');
+        imgEl.src = `./vititobd/${img}`;
+        imgEl.alt = `Pregunta ${i}`;
+        imgEl.onerror = function() { this.style.display = 'none'; };
+        imageDiv.appendChild(imgEl);
+
+        const radioOptions = document.createElement('div');
+        radioOptions.className = 'radio-options';
+
+        for (let opt = 1; opt <= options; opt++) {
+          const radioOption = document.createElement('div');
+          radioOption.className = 'radio-option';
+
+          const input = document.createElement('input');
+          input.type = 'radio';
+          input.id = `answer${i}_${opt}`;
+          input.name = `answer${i}`;
+          input.value = opt;
+          input.required = true;
+
+          const label = document.createElement('label');
+          label.htmlFor = `answer${i}_${opt}`;
+          const strong = document.createElement('strong');
+          strong.textContent = opt;
+          label.appendChild(strong);
+
+          radioOption.appendChild(input);
+          radioOption.appendChild(label);
+          radioOptions.appendChild(radioOption);
+
+          // Agregar evento click
+          input.addEventListener('change', function() {
+            updateAnswer(i, opt);
+          });
+        }
+
+        questionCard.appendChild(header);
+        questionCard.appendChild(imageDiv);
+        questionCard.appendChild(radioOptions);
+        container.appendChild(questionCard);
+      }
+    }
+
+    // Inicializar cuando se carga la página
+    document.addEventListener('DOMContentLoaded', function() {
+      generateQuestions();
+      updateValidationStatus();
+    });
+
+    // Prevenir envío accidental
+    document.forms['questions'].addEventListener('submit', function(e) {
+      if (!verifyForm(this)) {
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    // Limpiar respuestas al resetear
+    document.forms['questions'].addEventListener('reset', function() {
+      for (let i = 1; i <= 60; i++) {
+        answers[i] = 0;
+      }
+      setTimeout(updateValidationStatus, 100);
+    });
+  </script>
+</body>
+</html>

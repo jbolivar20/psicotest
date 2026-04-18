@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Ejemplo - PsicoTest</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="../assets/js/submit-results.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f8f9fa; }
+        .container { max-width: 700px; margin: 40px auto; padding: 20px; }
+        .question { background: white; padding: 25px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        label { display: block; margin: 12px 0 6px; font-weight: 600; }
+        button {
+            background: #4a6cf7;
+            color: white;
+            padding: 16px 32px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="text-align:center; color:#2c3e50;">🧪 Test de Ejemplo</h1>
+        <p style="text-align:center;">Prueba el sistema completo de guardado en Google Sheets</p>
+
+        <div class="question">
+            <label>1. Nombre completo:</label>
+            <input type="text" id="nombre" required style="width:100%; padding:12px; font-size:1.1rem;">
+
+            <label style="margin-top:15px;">2. Edad:</label>
+            <input type="number" id="edad" required min="12" style="width:100%; padding:12px; font-size:1.1rem;">
+
+            <label style="margin-top:15px;">3. Género:</label>
+            <select id="genero" required style="width:100%; padding:12px; font-size:1.1rem;">
+                <option value="">Selecciona...</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
+                <option value="Otro">Otro</option>
+            </select>
+        </div>
+
+        <div class="question">
+            <h3>Responde según cómo te has sentido últimamente:</h3>
+            
+            <label>4. Me siento con energía y motivado</label>
+            <div>
+                <input type="radio" name="q1" value="4" required> Muy de acuerdo<br>
+                <input type="radio" name="q1" value="3"> De acuerdo<br>
+                <input type="radio" name="q1" value="2"> Neutral<br>
+                <input type="radio" name="q1" value="1"> En desacuerdo
+            </div>
+
+            <label style="margin-top:20px;">5. Tengo dificultad para concentrarme</label>
+            <div>
+                <input type="radio" name="q2" value="1" required> Muy de acuerdo<br>
+                <input type="radio" name="q2" value="2"> De acuerdo<br>
+                <input type="radio" name="q2" value="3"> Neutral<br>
+                <input type="radio" name="q2" value="4"> En desacuerdo
+            </div>
+
+            <label style="margin-top:20px;">6. Me siento optimista sobre el futuro</label>
+            <div>
+                <input type="radio" name="q3" value="4" required> Muy de acuerdo<br>
+                <input type="radio" name="q3" value="3"> De acuerdo<br>
+                <input type="radio" name="q3" value="2"> Neutral<br>
+                <input type="radio" name="q3" value="1"> En desacuerdo
+            </div>
+        </div>
+
+        <button type="button" onclick="enviarTest()">Enviar Test y Guardar en Google Sheets</button>
+    </div>
+
+    <script>
+        async function enviarTest() {
+            // Captura respuestas
+            const nombre = document.getElementById('nombre').value.trim();
+            const edad = document.getElementById('edad').value;
+            const genero = document.getElementById('genero').value;
+
+            const q1 = parseInt(document.querySelector('input[name="q1"]:checked').value);
+            const q2 = parseInt(document.querySelector('input[name="q2"]:checked').value);
+            const q3 = parseInt(document.querySelector('input[name="q3"]:checked').value);
+
+            // Calificación
+            const puntuacionTotal = q1 + q2 + q3;
+
+            // Interpretación
+            let interpretacion = "";
+            if (puntuacionTotal >= 10) interpretacion = "Nivel alto de bienestar emocional. ¡Muy bien!";
+            else if (puntuacionTotal >= 7) interpretacion = "Nivel moderado de bienestar.";
+            else interpretacion = "Nivel bajo de bienestar. Recomiendo evaluación más profunda.";
+
+            // Datos consolidados
+            const resultados = {
+                nombre: nombre,
+                edad: edad,
+                genero: genero,
+                testNombre: "Test de Ejemplo - Bienestar Emocional",
+                puntuacion: puntuacionTotal,
+                interpretacion: interpretacion,
+                respuestas: { q1, q2, q3 },
+                notas: "Test de verificación desde GitHub Pages"
+            };
+
+            // Enviar a Google Sheets
+            await guardarEnSheets(resultados);
+        }
+    </script>
+</body>
+</html>
